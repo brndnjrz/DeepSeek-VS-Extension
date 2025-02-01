@@ -1,1 +1,1 @@
-# DeepSeek-VS-Extension
+# DeepSeek VS Extension
