@@ -14,8 +14,8 @@
   "contributes": {
     "commands": [
       {
-        "command": "deepseek-vs-ext.helloWorld",
-        "title": "Hello World"
+        "command": "deepseek-vs-ext.deepSeek",
+        "title": "DeepSeek"
       }
     ]
   },
