@@ -17,7 +17,7 @@ export function activate(context: vscode.ExtensionContext) {
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with registerCommand
 	// The commandId parameter must match the command field in package.json
-	const disposable = vscode.commands.registerCommand('deepseek-vs-ext.helloWorld', () => {
+	const disposable = vscode.commands.registerCommand('deepseek-vs-ext.deepSeek', () => {
 		const panel = vscode.window.createWebviewPanel(
 			'deepChat',
 			'Deep Seek Chat',
@@ -67,14 +67,19 @@ function getWebviewContent(): string{
 		<style>
 			body { font-family: sans-serif; margin: 1rem; }
 			#prompt { width: 100%; box-sizing: border-box; }
-			#response { border: 1px solid #ccc; margin-top: 1rem; padding: 0.5rem; min-height: 75%; min-width: 40ch; }
+			#response { border: 1px solid #ccc; margin-top: 1rem; padding: 0.5rem; min-height: 75%; min-width: 40ch; font-size: 14px; }
+			#askBtn { background-color:rgb(79, 76, 175); color: white; border: none; padding: 5px 10px; font-size: 16px; cursor: pointer; }
+			#askBtn: hover { background-color:rgb(79, 62, 142); }
 		</style>
 	</head>
 	<body>
-		<h2>Deep VS Code Extension</h2>
+		<h2>DeepSeek VS Code Extension</h2>
 		<textarea id="prompt" rows="3" placeholder="Ask me something..."></textarea><br />
 		<button id="askBtn">Ask</button>
-		<div id="response"></div>
+		<div id="response">
+			<p id="response-text"></p>
+			<p id="response-status" style="color: green;"></p>
+		</div>
 
 		<script>
 			const vscode = acquireVsCodeApi();
@@ -87,7 +92,15 @@ function getWebviewContent(): string{
 			window.addEventListener('message', event => {
 				const {command, text } = event.data;
 				if (command === 'chatResponse') {
-					document.getElementById('response').innerText = text;
+					document.getElementById('response-text').innerText = text;
+					const statusElement = document.getElementById('response-status');
+					if (text.startsWith('Error:')) {
+						statusElement.style.color = 'red';
+						statusElement.innerText = 'Error: ' + text.substring(6);
+					} else {
+						statusElement.style.color = 'green';
+						statusElement.innerText = 'Succes!'
+					}
 				}
 			});
 		</script>
